@@ -28,6 +28,17 @@ public class EmployeeRepository {
         PaginatedScanList <Employee> paginatedList = dynamoDBMapper.scan(Employee.class, paginatedScanListExpression);
        return paginatedList;
      }
+    
+    public PaginatedScanList <Employee> getEmployeesByDepartment(Employee employee, String department){
+       DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+       Map<String, Condition> filter = new HashMap<String, Condition>();
+       filter.put("department", new Condition().withComparisonOperator(ComparisonOperator.CONTAINS)
+                    .withAttributeValueList(new AttributeValue().withS(department)));
+
+       scanExpression.setScanFilter(filter);
+       PaginatedScanList<Employee> scanResult = dynamoDBMapper.scan(Employee.class, scanExpression);
+       return scanResult;
+    }
 
     public String deleteEmployeeById(String customerId) {
         dynamoDBMapper.delete(dynamoDBMapper.load(Employee.class, customerId));
