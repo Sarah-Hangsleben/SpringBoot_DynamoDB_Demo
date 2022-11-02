@@ -26,6 +26,11 @@ public class EmployeeController {
     public PaginatedScanList<Employee> getEmployees(Employee employee) {
         return employeeRepository.getEmployees(employee);
     }
+    
+      @GetMapping("/employees/department/{department}")
+    public PaginatedScanList<Employee> getEmployeesByDepartment(@PathVariable("department") String department, Employee employee) {
+        return employeeRepository.getEmployeesByDepartment(employee,department);
+    }
 
     @DeleteMapping("/employee/{id}/delete")
     public String deleteEmployeeById(@PathVariable("id") String employeeId) {
