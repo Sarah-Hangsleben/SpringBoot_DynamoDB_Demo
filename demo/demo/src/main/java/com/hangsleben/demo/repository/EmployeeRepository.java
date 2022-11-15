@@ -49,7 +49,7 @@ public class EmployeeRepository {
         return scanResult;
     }
     
-    public PaginatedQueryList < Employee > getEmployeesByDepartmentQuery(String employeeId, String department) {
+    public PaginatedQueryList <Employee> getEmployeesByDepartmentQuery(String employeeId, String department) {
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
 
@@ -57,13 +57,13 @@ public class EmployeeRepository {
         condition.withComparisonOperator(ComparisonOperator.EQ)
             .withAttributeValueList(new AttributeValue().withS(department));
 
-        DynamoDBQueryExpression < Employee > queryExpression =
-            new DynamoDBQueryExpression < Employee > ()
+        DynamoDBQueryExpression <Employee> queryExpression =
+            new DynamoDBQueryExpression <Employee> ()
             .withHashKeyValues(employee)
             .withRangeKeyCondition("department", condition)
-            .withLimit(10);
+            .withLimit(2);
 
-        PaginatedQueryList < Employee > queryResult = dynamoDBMapper.query(Employee.class, queryExpression);
+        PaginatedQueryList <Employee> queryResult = dynamoDBMapper.query(Employee.class, queryExpression);
 
         return queryResult;
     }
