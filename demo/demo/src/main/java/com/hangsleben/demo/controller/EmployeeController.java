@@ -1,5 +1,6 @@
 package com.hangsleben.demo.controller;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.hangsleben.demo.entity.Employee;
 import com.hangsleben.demo.repository.EmployeeRepository;
@@ -27,14 +28,18 @@ public class EmployeeController {
         return employeeRepository.getEmployees(employee);
     }
     
-      @GetMapping("/employees/department/{department}")
-    public PaginatedScanList<Employee> getEmployeesByDepartment(@PathVariable("department") String department, Employee employee) {
-        return employeeRepository.getEmployeesByDepartment(employee,department);
+    @GetMapping("/employees/department/{department}")
+    public PaginatedScanList<Employee> getEmployeesByDepartmentScan(@PathVariable("department") String department) {
+        return employeeRepository.getEmployeesByDepartmentScan(department);
+    }
+    
+    @GetMapping("/employee/{employee}/department/{department}")
+    public PaginatedQueryList<Employee> getEmployeesByDepartmentQuery(@PathVariable("department") String department, @PathVariable("employee")String employeeId) {
+        return employeeRepository.getEmployeesByDepartmentQuery(employeeId,department);
     }
 
     @DeleteMapping("/employee/{id}/delete")
     public String deleteEmployeeById(@PathVariable("id") String employeeId) {
         return  employeeRepository.deleteEmployeeById(employeeId);
     }
-
 }
